@@ -2,7 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+//https://tips4java.wordpress.com/2008/10/11/table-format-renderers/
+
 package com.vendedores.client.view;
+
+import com.vendedores.client.utilities.NumberRenderer;
+import java.math.BigDecimal;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -31,12 +39,15 @@ public class InserirVendedoresView extends javax.swing.JFrame {
         lblIdade = new javax.swing.JLabel();
         spnIdade = new javax.swing.JSpinner();
         lblTotalVendas = new javax.swing.JLabel();
-        spnTotalVendas = new javax.swing.JSpinner();
-        txtIdentificacaoVendaIC = new javax.swing.JTextField();
         lblIdentificacaoVendaIC = new javax.swing.JLabel();
         txtFilial = new javax.swing.JTextField();
         lblFilial = new javax.swing.JLabel();
         btnEnviar = new javax.swing.JButton();
+        jScrollPaneTabelaVendedores = new javax.swing.JScrollPane();
+        tblVendedores = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        spnIdentificacaoVendaIC = new javax.swing.JSpinner();
+        txtTotalVendas = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(600, 600));
@@ -48,41 +59,86 @@ public class InserirVendedoresView extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtVendedor);
-        txtVendedor.setBounds(110, 20, 330, 40);
+        txtVendedor.setBounds(90, 20, 330, 40);
 
+        lblVendedor.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         lblVendedor.setText("Vendedor:");
         getContentPane().add(lblVendedor);
-        lblVendedor.setBounds(40, 30, 60, 16);
+        lblVendedor.setBounds(20, 30, 60, 14);
 
+        lblIdade.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblIdade.setText("Idade:");
         getContentPane().add(lblIdade);
-        lblIdade.setBounds(30, 90, 40, 10);
-        getContentPane().add(spnIdade);
-        spnIdade.setBounds(80, 90, 64, 20);
+        lblIdade.setBounds(20, 90, 40, 10);
 
+        spnIdade.setModel(new javax.swing.SpinnerNumberModel(0, 0, 200, 1));
+        getContentPane().add(spnIdade);
+        spnIdade.setBounds(90, 90, 67, 22);
+
+        lblTotalVendas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblTotalVendas.setText("Total de vendas:");
         getContentPane().add(lblTotalVendas);
-        lblTotalVendas.setBounds(180, 90, 90, 16);
+        lblTotalVendas.setBounds(190, 90, 90, 16);
 
-        spnTotalVendas.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 1.0d));
-        getContentPane().add(spnTotalVendas);
-        spnTotalVendas.setBounds(290, 90, 160, 22);
-        getContentPane().add(txtIdentificacaoVendaIC);
-        txtIdentificacaoVendaIC.setBounds(180, 190, 260, 40);
-
+        lblIdentificacaoVendaIC.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblIdentificacaoVendaIC.setText("Identificação da venda(IC):");
         getContentPane().add(lblIdentificacaoVendaIC);
-        lblIdentificacaoVendaIC.setBounds(30, 200, 150, 16);
+        lblIdentificacaoVendaIC.setBounds(10, 200, 150, 16);
         getContentPane().add(txtFilial);
-        txtFilial.setBounds(70, 130, 340, 40);
+        txtFilial.setBounds(90, 130, 340, 40);
 
+        lblFilial.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblFilial.setText("Filial:");
         getContentPane().add(lblFilial);
-        lblFilial.setBounds(30, 140, 40, 16);
+        lblFilial.setBounds(20, 140, 40, 16);
 
         btnEnviar.setText("Enviar");
         getContentPane().add(btnEnviar);
-        btnEnviar.setBounds(400, 300, 72, 23);
+        btnEnviar.setBounds(450, 450, 72, 23);
+
+        tblVendedores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Vendedor", "Idade", "Total", "Filial", "IC"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPaneTabelaVendedores.setViewportView(tblVendedores);
+
+        getContentPane().add(jScrollPaneTabelaVendedores);
+        jScrollPaneTabelaVendedores.setBounds(40, 240, 480, 190);
+
+        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton1.setText("Adicionar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(430, 200, 90, 21);
+
+        spnIdentificacaoVendaIC.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        getContentPane().add(spnIdentificacaoVendaIC);
+        spnIdentificacaoVendaIC.setBounds(190, 200, 160, 22);
+
+        txtTotalVendas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        txtTotalVendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalVendasActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtTotalVendas);
+        txtTotalVendas.setBounds(290, 90, 190, 22);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -90,6 +146,37 @@ public class InserirVendedoresView extends javax.swing.JFrame {
     private void txtVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtVendedorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtVendedorActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        // TODO add your handling code here:
+        if (txtVendedor.getText().equals("")
+                || Integer.parseInt(spnIdade.getValue().toString()) == 0
+                || txtTotalVendas.getText().equals("0,00")
+                || txtFilial.getText().equals("")
+                || Integer.parseInt(spnIdentificacaoVendaIC.getValue().toString()) == 0) {
+            
+            JOptionPane.showMessageDialog(this, "Campos em branco ou com valores nulos.");
+            
+        } else {
+            Object data[] = {txtVendedor.getText(),
+                spnIdade.getValue(),
+                txtTotalVendas.getValue(),
+                txtFilial.getText(),
+                spnIdentificacaoVendaIC.getValue()};            
+            
+            TableColumnModel m = tblVendedores.getColumnModel();            
+            m.getColumn(2).setCellRenderer(NumberRenderer.getCurrencyRenderer());
+            
+            DefaultTableModel tblModel = (DefaultTableModel) tblVendedores.getModel();
+            tblModel.addRow(data);           
+            
+        }
+
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void txtTotalVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalVendasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalVendasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -130,15 +217,18 @@ public class InserirVendedoresView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPaneTabelaVendedores;
     private javax.swing.JLabel lblFilial;
     private javax.swing.JLabel lblIdade;
     private javax.swing.JLabel lblIdentificacaoVendaIC;
     private javax.swing.JLabel lblTotalVendas;
     private javax.swing.JLabel lblVendedor;
     private javax.swing.JSpinner spnIdade;
-    private javax.swing.JSpinner spnTotalVendas;
+    private javax.swing.JSpinner spnIdentificacaoVendaIC;
+    private javax.swing.JTable tblVendedores;
     private javax.swing.JTextField txtFilial;
-    private javax.swing.JTextField txtIdentificacaoVendaIC;
+    private javax.swing.JFormattedTextField txtTotalVendas;
     private javax.swing.JTextField txtVendedor;
     // End of variables declaration//GEN-END:variables
 }
