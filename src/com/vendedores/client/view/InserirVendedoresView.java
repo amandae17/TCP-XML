@@ -3,11 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 //https://tips4java.wordpress.com/2008/10/11/table-format-renderers/
-
 package com.vendedores.client.view;
 
+import com.vendedores.client.model.Dado;
+import com.vendedores.client.model.ListaLigada;
 import com.vendedores.client.utilities.NumberRenderer;
-import java.math.BigDecimal;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -18,11 +18,14 @@ import javax.swing.table.TableColumnModel;
  */
 public class InserirVendedoresView extends javax.swing.JFrame {
 
+    private ListaLigada list;
+
     /**
      * Creates new form Interface
      */
     public InserirVendedoresView() {
         initComponents();
+        this.list = new ListaLigada();
     }
 
     /**
@@ -93,6 +96,11 @@ public class InserirVendedoresView extends javax.swing.JFrame {
         lblFilial.setBounds(20, 140, 40, 16);
 
         btnEnviar.setText("Enviar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnEnviar);
         btnEnviar.setBounds(450, 450, 72, 23);
 
@@ -149,27 +157,32 @@ public class InserirVendedoresView extends javax.swing.JFrame {
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         // TODO add your handling code here:
-        if (txtVendedor.getText().equals("")
-                || Integer.parseInt(spnIdade.getValue().toString()) == 0
-                || txtTotalVendas.getText().equals("0,00")
-                || txtFilial.getText().equals("")
-                || Integer.parseInt(spnIdentificacaoVendaIC.getValue().toString()) == 0) {
-            
+        String vendedor = txtVendedor.getText();
+        int idade = Integer.parseInt(spnIdade.getValue().toString());
+        double total = Double.parseDouble(txtTotalVendas.getText().replace(",", "."));
+        String filial = txtFilial.getText();
+        int ic = Integer.parseInt(spnIdentificacaoVendaIC.getValue().toString());
+
+        if (vendedor.equals("")
+                || idade == 0
+                || total == 0
+                || filial.equals("")
+                || ic == 0) {
+
             JOptionPane.showMessageDialog(this, "Campos em branco ou com valores nulos.");
-            
+
         } else {
-            Object data[] = {txtVendedor.getText(),
-                spnIdade.getValue(),
-                txtTotalVendas.getValue(),
-                txtFilial.getText(),
-                spnIdentificacaoVendaIC.getValue()};            
-            
-            TableColumnModel m = tblVendedores.getColumnModel();            
+            Dado dado = new Dado(vendedor, idade, total, filial, ic);            
+            list.adiciona(dado);
+
+            Object data[] = {vendedor, idade, total, filial, ic};
+
+            TableColumnModel m = tblVendedores.getColumnModel();
             m.getColumn(2).setCellRenderer(NumberRenderer.getCurrencyRenderer());
-            
+
             DefaultTableModel tblModel = (DefaultTableModel) tblVendedores.getModel();
-            tblModel.addRow(data);           
-            
+            tblModel.addRow(data);
+
         }
 
     }//GEN-LAST:event_btnInserirActionPerformed
@@ -177,6 +190,11 @@ public class InserirVendedoresView extends javax.swing.JFrame {
     private void txtTotalVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalVendasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTotalVendasActionPerformed
+
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        // TODO add your handling code here:
+        System.out.println(this.list);
+    }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**
      * @param args the command line arguments
