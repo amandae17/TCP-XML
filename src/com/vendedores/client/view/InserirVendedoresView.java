@@ -194,6 +194,7 @@ public class InserirVendedoresView extends javax.swing.JFrame {
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         // TODO add your handling code here:
         System.out.println(this.list);
+        //[[Luiz, 19, 2300.0, Osasco, 1],[Marcelo, 22, 2700.0, Rio de Janeiro, 2],[Ana, 25, 2400.0, S�o Paulo, 3]]
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**
