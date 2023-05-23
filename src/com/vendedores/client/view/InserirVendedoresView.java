@@ -8,6 +8,11 @@ package com.vendedores.client.view;
 import com.vendedores.client.model.Dado;
 import com.vendedores.client.model.ListaLigada;
 import com.vendedores.client.utilities.NumberRenderer;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -19,6 +24,29 @@ import javax.swing.table.TableColumnModel;
 public class InserirVendedoresView extends javax.swing.JFrame {
 
     private ListaLigada list;
+    
+    private void SendMessage(String message){
+        
+        int port = 4321;
+
+        try {
+            DataInputStream cinput;
+            PrintStream coutput;
+            Socket clisoc;
+
+            clisoc = new Socket("127.0.0.1", port);            
+            cinput = new DataInputStream(clisoc.getInputStream());
+            coutput = new PrintStream(clisoc.getOutputStream());                     
+            
+            coutput.println(message); 
+
+            String str2 = cinput.readLine();
+            System.out.println(str2);
+        } catch (IOException ioe) {
+            System.out.println(ioe.getMessage());
+        }
+       
+    }
 
     /**
      * Creates new form Interface
@@ -194,6 +222,10 @@ public class InserirVendedoresView extends javax.swing.JFrame {
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         // TODO add your handling code here:
         System.out.println(this.list);
+        //SendMessage(this.list.toString());
+        list = new ListaLigada();
+        DefaultTableModel model = (DefaultTableModel) tblVendedores.getModel();
+        model.setRowCount(0);
         //[[Luiz, 19, 2300.0, Osasco, 1],[Marcelo, 22, 2700.0, Rio de Janeiro, 2],[Ana, 25, 2400.0, S�o Paulo, 3]]
     }//GEN-LAST:event_btnEnviarActionPerformed
 
