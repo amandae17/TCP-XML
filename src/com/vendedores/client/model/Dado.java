@@ -68,10 +68,10 @@ public class Dado {
 
     @Override
     public String toString() {
-        return "[" + vendedor + ", " + 
-                idade + ", " +
-                total + ", " +
-                filial + ", " +
+        return "[" + vendedor + "; " + 
+                idade + "; " +
+                total + "; " +
+                filial + "; " +
                 ic + "]";
     }
     
