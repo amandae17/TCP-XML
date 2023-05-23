@@ -75,6 +75,33 @@ public class Dado {
                 ic + "]";
     }
     
-    
+    public String toXML() {
+    	
+    	StringBuilder builder = new StringBuilder();
+    	
+    	builder.append(" <Dado>\n");
+    	builder.append("  <Vendedor>");
+    	builder.append(this.getVendedor());
+    	builder.append("</Vendedor>\n");
+    	
+    	builder.append("  <Idade>");
+    	builder.append(this.getIdade());
+    	builder.append("</Idade>\n");
+    	
+    	builder.append("  <Total>");
+    	builder.append(this.getTotal());
+    	builder.append("</Total>\n");
+    	
+    	builder.append("  <Filial>");
+    	builder.append(this.getFilial());
+    	builder.append("</Filial>\n");
+    	
+    	builder.append("  <IC>");
+    	builder.append(this.getIc());
+    	builder.append("</IC>\n");    	
+    	builder.append(" </Dado>");   	
+    	
+    	return builder.toString();
+    }   
 
 }
