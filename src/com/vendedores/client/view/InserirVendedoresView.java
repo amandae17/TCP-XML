@@ -8,6 +8,7 @@ package com.vendedores.client.view;
 import com.vendedores.client.model.Dado;
 import com.vendedores.client.model.ListaLigada;
 import com.vendedores.client.utilities.NumberRenderer;
+import java.awt.event.WindowStateListener;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -220,12 +221,16 @@ public class InserirVendedoresView extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         // TODO add your handling code here:
-        System.out.println(this.list);
+        if(!list.isEmpty()){
+            list = new ListaLigada();
+            DefaultTableModel model = (DefaultTableModel) tblVendedores.getModel();
+            model.setRowCount(0);        
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Lista de vendedores vazia!");        
+        }
         //SendMessage(this.list.toString());
-        list = new ListaLigada();
-        DefaultTableModel model = (DefaultTableModel) tblVendedores.getModel();
-        model.setRowCount(0);
-        //[[Luiz, 19, 2300.0, Osasco, 1],[Marcelo, 22, 2700.0, Rio de Janeiro, 2],[Ana, 25, 2400.0, S�o Paulo, 3]]
+        
+        //[[Luiz; 19, 2300.0; Osasco, 1],[Marcelo; 22; 2700.0; Rio de Janeiro; 2],[Ana; 25; 2400.0; Osasco; 3]]
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**
