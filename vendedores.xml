@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Registro>
+ <Dado>
+  <Vendedor>Julio</Vendedor>
+  <Idade>27</Idade>
+  <Total>3900.5</Total>
+  <Filial> Bahia</Filial>
+  <IC>10</IC>
+ </Dado>
+ <Dado>
+  <Vendedor>Maria</Vendedor>
+  <Idade>22</Idade>
+  <Total>2330.0</Total>
+  <Filial> Osasco</Filial>
+  <IC>5</IC>
+ </Dado>
+ <Dado>
+  <Vendedor>Pedro</Vendedor>
+  <Idade>25</Idade>
+  <Total>3200.5</Total>
+  <Filial> Manaus</Filial>
+  <IC>8</IC>
+ </Dado>
+</Registro>

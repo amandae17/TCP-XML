@@ -8,8 +8,8 @@ package com.vendedores.client.view;
 import com.vendedores.client.model.Dado;
 import com.vendedores.client.model.ListaLigada;
 import com.vendedores.client.utilities.NumberRenderer;
-import java.awt.event.WindowStateListener;
 import java.io.DataInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
@@ -24,28 +24,32 @@ import javax.swing.table.TableColumnModel;
 public class InserirVendedoresView extends javax.swing.JFrame {
 
     private ListaLigada list;
-    
-    private void SendMessage(String message){
-        
+
+    private void SendMessage(String message) {
+
         int port = 4321;
 
         try {
+            
             DataInputStream cinput;
             PrintStream coutput;
             Socket clisoc;
-
-            clisoc = new Socket("127.0.0.1", port);            
+            clisoc = new Socket("127.0.0.1", port);
             cinput = new DataInputStream(clisoc.getInputStream());
-            coutput = new PrintStream(clisoc.getOutputStream());                     
-            
-            coutput.println(message); 
+            coutput = new PrintStream(clisoc.getOutputStream());
 
-            String str2 = cinput.readLine();
-            System.out.println(str2);
-        } catch (IOException ioe) {
-            System.out.println(ioe.getMessage());
+            coutput.println(message);           
+
+            String responseMessage = getResponse(cinput);
+            
+            System.out.println(responseMessage);
+            
+            salvarXML(responseMessage);
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-       
+
     }
 
     /**
@@ -200,7 +204,7 @@ public class InserirVendedoresView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Campos em branco ou com valores nulos.");
 
         } else {
-            Dado dado = new Dado(vendedor, idade, total, filial, ic);            
+            Dado dado = new Dado(vendedor, idade, total, filial, ic);
             list.adiciona(dado);
 
             Object data[] = {vendedor, idade, total, filial, ic};
@@ -221,15 +225,16 @@ public class InserirVendedoresView extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         // TODO add your handling code here:
-        if(!list.isEmpty()){
+        if (!list.isEmpty()) {
+            SendMessage(list.toString());
             list = new ListaLigada();
             DefaultTableModel model = (DefaultTableModel) tblVendedores.getModel();
-            model.setRowCount(0);        
+            model.setRowCount(0);
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Lista de vendedores vazia!");        
+            JOptionPane.showMessageDialog(rootPane, "Lista de vendedores vazia!");
         }
         //SendMessage(this.list.toString());
-        
+
         //[[Luiz; 19, 2300.0; Osasco, 1],[Marcelo; 22; 2700.0; Rio de Janeiro; 2],[Ana; 25; 2400.0; Osasco; 3]]
     }//GEN-LAST:event_btnEnviarActionPerformed
 
@@ -286,4 +291,27 @@ public class InserirVendedoresView extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtTotalVendas;
     private javax.swing.JTextField txtVendedor;
     // End of variables declaration//GEN-END:variables
+
+    private String getResponse(DataInputStream cinput) throws Exception{
+        StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = cinput.readLine()) != null) {
+                response.append(line);
+                response.append("\n"); 
+            }
+
+            return response.toString();
+    }
+
+    private void salvarXML(String responseMessage) {
+
+        String filePath = "vendedores.xml";
+
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(responseMessage);            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
