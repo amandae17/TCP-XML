@@ -40,9 +40,7 @@ public class InserirVendedoresView extends javax.swing.JFrame {
 
             coutput.println(message);           
 
-            String responseMessage = getResponse(cinput);
-            
-            System.out.println(responseMessage);
+            String responseMessage = getResponse(cinput);  
             
             salvarXML(responseMessage);
             
@@ -50,6 +48,29 @@ public class InserirVendedoresView extends javax.swing.JFrame {
             System.out.println(e.getMessage());
         }
 
+    }
+    
+    private String getResponse(DataInputStream cinput) throws Exception{
+        StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = cinput.readLine()) != null) {
+                response.append(line);
+                response.append("\n"); 
+            }
+
+            return response.toString();
+    }
+
+    private void salvarXML(String responseMessage) {
+
+        String filePath = "vendedores.xml";
+
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(responseMessage);            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -292,26 +313,5 @@ public class InserirVendedoresView extends javax.swing.JFrame {
     private javax.swing.JTextField txtVendedor;
     // End of variables declaration//GEN-END:variables
 
-    private String getResponse(DataInputStream cinput) throws Exception{
-        StringBuilder response = new StringBuilder();
-            String line;
-
-            while ((line = cinput.readLine()) != null) {
-                response.append(line);
-                response.append("\n"); 
-            }
-
-            return response.toString();
-    }
-
-    private void salvarXML(String responseMessage) {
-
-        String filePath = "vendedores.xml";
-
-        try (FileWriter fileWriter = new FileWriter(filePath)) {
-            fileWriter.write(responseMessage);            
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    
 }
